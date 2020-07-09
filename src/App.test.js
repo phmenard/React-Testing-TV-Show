@@ -1,6 +1,6 @@
 import React from "react";
 import App from './App';
-import { render, useEvent, waitFor, getAllByTestId, findAllByAltText, queryAllByText } from '@testing-library/react';
+import { render, fireEvent, waitFor, getAllByTestId, findAllByAltText, queryAllByText, getByText } from '@testing-library/react';
 import { fetchShow as mockFetchShow } from './api/fetchShow';
 
 const mockData = {
@@ -22,26 +22,18 @@ const mockData = {
 
 jest.mock("./api/fetchShow");
 
-test("App fetches show data and renders it", async () => {
-    // Render app - should show "Get Data" button
-    mockFetchShow.mockResolvedValueOnce(mockData);
-    const { queryAllByText } = render(<App />);
-    
-    // grab the dropdown
-    /*const dropDown = await findByText(/select a season/i);
-    useEvent.click(dropDown);
-    await findByText(/fetching data.../i)*/
+test("renders crap, who cares", async () => { 
 
-    // grab a season
-    /*const season1 = await findByText(/season1/i)
-    useEvent.click(season1);*/
+    mockFetchShow.mockResolvedValueOnce(mockData)
 
-    // test for fetching data
-    expect(queryAllByText(/fetching data.../i)).toHaveLength(1);
+    const {getAllByTestID, findByText} = render(<App />) 
+    const dropDown = await findByText(/select a season/i)
 
-    // wait for responce
-    await waitFor(() => {
-        expect(queryAllByText(/Episode 1/i)).toHaveLength(1);
+    fireEvent.click(dropDown)
+    // await findByText(/Fetching Data.../i) 
 
-    })
-});
+    const episode1 = await findByText(/episode 1/i)
+    expect(episode1).toHaveTextContent(/episode 1/i)
+    expect(episode1).not.toHaveTextContent(/I hate testing/i)
+     
+})
