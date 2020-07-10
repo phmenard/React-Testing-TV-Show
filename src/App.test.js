@@ -22,17 +22,18 @@ const mockData = {
 
 jest.mock("./api/fetchShow");
 
-test("renders crap, who cares", async () => { 
+test("it should show responce from api", async () => { 
 
     mockFetchShow.mockResolvedValueOnce(mockData)
 
     const {getAllByTestID, findByText} = render(<App />) 
-    const dropDown = await findByText(/select a season/i)
+    //const dropDown = await findByText(/select a season/i)
 
-    fireEvent.click(dropDown)
+    //fireEvent.click(dropDown)
     // await findByText(/Fetching Data.../i) 
 
     const episode1 = await findByText(/episode 1/i)
+    //console.log(episode1);
     expect(episode1).toHaveTextContent(/episode 1/i)
     expect(episode1).not.toHaveTextContent(/I hate testing/i)
      
